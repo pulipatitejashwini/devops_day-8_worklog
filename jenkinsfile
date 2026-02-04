@@ -1,32 +1,57 @@
 pipeline {
- agent any
+    agent any
 
- environment {
-   PROJECT = "CI_DEMO"
- }
-
- stages {
-
-  stage('Checkout') {
-    steps {
-      git branch: 'main',
-      url: 'https://github.com/pulipatitejashwini/devops_day-8_worklog.git'
+    environment {
+        PROJECT = "CI_DEMO"
+        SECRET = credentials('DEMO_SECRET')
     }
-  }
 
-  stage('Install Dependencies') {
-    steps {
-      sh 'echo No dependencies for static project'
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/<your-username>/<repo-name>.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'echo "No dependencies required for static HTML project"'
+            }
+        }
+
+        stage('Validation Test') {
+            steps {
+                sh 'chmod +x test.sh'
+                sh './test.sh'
+            }
+        }
+
+        stage('Use Secret Variable') {
+            steps {
+                sh '''
+                   echo "Using secret securely"
+                   echo "Length of secret is: ${#SECRET}"
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'echo "Application Deployed Successfully"'
+            }
+        }
     }
-  }
 
-  stage('Validation Test') {
-    steps {
-      sh 'chmod +x test.sh'
-      sh './test.sh'
+    post {
+        success {
+            echo "Pipeline executed successfully"
+        }
+
+        failure {
+            echo "Pipeline failed - please check logs"
+        }
     }
-  }
-
- }
 }
 
