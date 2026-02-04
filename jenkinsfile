@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        PROJECT = "CI_DEMO"
         SECRET = credentials('DEMO_SECRET')
     }
 
