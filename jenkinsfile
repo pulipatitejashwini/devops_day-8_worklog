@@ -7,13 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main',
-                url: 'https://github.com/pulipatitejashwini/devops_day-8_worklog.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'echo "No dependencies required for static HTML project"'
