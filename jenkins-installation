@@ -1,0 +1,38 @@
+# Install Jenkins using the OFFICIAL WAR + systemd method
+(This is production-grade and recommended for Ubuntu 24.04)
+
+## STEP 1 – Install Java 17
+`sudo apt update`                  
+`sudo apt install openjdk-17-jdk -y`                  
+### Verify:
+`java -version`                
+
+## STEP 2 – Download Jenkins WAR (Official)
+`wget https://get.jenkins.io/war-stable/latest/jenkins.war`               
+
+## STEP 3 – Create Jenkins Service
+`sudo vi /etc/systemd/system/jenkins.service`              
+### Paste:
+[Unit]              
+Description=Jenkins                 
+After=network.target                   
+
+[Service]                
+User=ubuntu                 
+ExecStart=/usr/bin/java -jar /home/ubuntu/jenkins.war                   
+Restart=always                
+
+[Install]               
+WantedBy=multi-user.target                 
+
+## STEP 4 – Start Jenkins
+`sudo systemctl daemon-reload`                 
+`sudo systemctl start jenkins`                     
+`sudo systemctl enable jenkins`                   
+### Check:
+`sudo systemctl status jenkins`               
+
+## STEP 5 – Open Jenkins
+`http://YOUR_EC2_IP:8080`             
+### Get password:
+`cat ~/.jenkins/secrets/initialAdminPassword`                 
